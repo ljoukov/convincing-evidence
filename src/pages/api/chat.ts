@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_API_KEY || "" });
+const ai = new GoogleGenAI({ apiKey: import.meta.env.GOOGLE_AI_API_KEY || "" });
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -17,13 +17,16 @@ export const POST: APIRoute = async ({ request }) => {
     const { message } = body;
     console.log('Received message:', message);
     
-    // Here you can add your chat logic, API calls, etc.
-    const response = `Hello ${message}`; // Simple echo response for now
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: message,
+    });
     
-    console.log('Sending response:', response);
+    const generatedText = response.text;
+    console.log('AI response:', generatedText);
     
     return new Response(JSON.stringify({ 
-      text: response 
+      text: generatedText
     }), {
       status: 200,
       headers: {
