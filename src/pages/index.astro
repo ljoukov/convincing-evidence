@@ -1,0 +1,11 @@
+---
+import '@/styles/globals.css'
+import Layout from '../layouts/Layout.astro';
+import { ChatInterface } from '@/components/ChatInterface';
+---
+
+<Layout title="Convincing Evidence">
+  <main class="min-h-screen p-4 flex items-center justify-center bg-slate-50">
+    <ChatInterface client:load />
+  </main>
+</Layout>
